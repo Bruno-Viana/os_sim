@@ -4,34 +4,46 @@
       <h1>Máquina Norma</h1>
       <form v-on:keypress="isNumber($event)">
         Quantidade de registradores: <input type="number" name="CountReg" v-model="CountReg" min="2" max="7"> <br>
-        <p>Valor de entrada para A:<input type="text" name="A" v-model="A"></p>
-        <p>Valor de entrada para B:<input type="text" name="B" v-model="B"></p>
-        <p v-if="CountReg>=3">Valor de entrada para C:<input type="text" name="C" v-model="C"></p>
-        <p v-if="CountReg>=4">Valor de entrada para D:<input type="text" name="D" v-model="D"></p>
-        <p v-if="CountReg>=5">Valor de entrada para E:<input type="text" name="E" v-model="E"></p>
-        <p v-if="CountReg>=6">Valor de entrada para F:<input type="text" name="F" v-model="F"></p>
-        <p v-if="CountReg>=7">Valor de entrada para G:<input type="text" name="G" v-model="G"></p>
+        <br><label for='uploadBtnReg'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
+        <input id="uploadBtnReg" type="file" ref="myFileReg" @change="uploadArquivoReg"> <i style="font-size:20px;cursor:help" @mouseover="showHelp=true" @mouseleave="showHelp=false" class="far fa-question-circle"></i>
+        <div class="tooltipReg" v-if="showHelp==true">
+          <h1 style="font-size:20px;">Exemplos de arquivos txt válidos:</h1>
+          reg=7 //Numero de reg<br>
+          A=2 //Atribuição ao registrador A<br>
+          B=3<br>
+          C=3<br>
+          D=1<br>
+          G=4<br>
+          Se nenhum valor foi setado e o número de registradores cobre o registrador ele iniciará como 0, como é o caso do E e do F neste exemplo.
+        </div>
+        <p v-if="isTxtReg==false" style="color:red; font-size:20"><b>Erro:</b> Apenas permitidos arquivos com extensão .txt</p>
+        <p>Valor de entrada para A:<input type="text" name="A" v-model="Aalt"></p>
+        <p>Valor de entrada para B:<input type="text" name="B" v-model="Balt"></p>
+        <p v-if="CountReg>=3">Valor de entrada para C:<input type="text" name="C" v-model="Calt"></p>
+        <p v-if="CountReg>=4">Valor de entrada para D:<input type="text" name="D" v-model="Dalt"></p>
+        <p v-if="CountReg>=5">Valor de entrada para E:<input type="text" name="E" v-model="Ealt"></p>
+        <p v-if="CountReg>=6">Valor de entrada para F:<input type="text" name="F" v-model="Falt"></p>
+        <p v-if="CountReg>=7">Valor de entrada para G:<input type="text" name="G" v-model="Galt"></p>
       
       <p v-if="isLtr" style="color:red; font-size:20"><b>Erro:</b> Apenas números não decimais serão aceitos.</p>
       </form>
       <hr>
-      <p><b>Registros atuais:</b></p>
-      <p>A: {{A}}</p>
-      <p>B: {{B}}</p>
-      <p v-if="CountReg>=3">C: {{C}}</p>
-      <p v-if="CountReg>=4">D: {{D}}</p>
-      <p v-if="CountReg>=5">E: {{E}}</p>
-      <p v-if="CountReg>=6">F: {{F}}</p>
-      <p v-if="CountReg>=7">G: {{G}}</p>
+      <p><b>Registros inseridos:</b></p>
+      <p>A: {{Aalt}}</p>
+      <p>B: {{Balt}}</p>
+      <p v-if="CountReg>=3">C: {{Calt}}</p>
+      <p v-if="CountReg>=4">D: {{Dalt}}</p>
+      <p v-if="CountReg>=5">E: {{Ealt}}</p>
+      <p v-if="CountReg>=6">F: {{Falt}}</p>
+      <p v-if="CountReg>=7">G: {{Galt}}</p>
     </div>
     <div class="descBlock">
-      <p>INSTRUÇÕES</p><hr>
+      <p style="margin-left: 8px">INSTRUÇÕES</p><hr>
       <textarea style="text-align:left" v-model="valueInst" placeholder="id: condição/operação variável ex:           1: se zero_b então vá_para9 senão vá_para2"></textarea><br>
       <label for='uploadBtn'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
       <input id="uploadBtn" type="file" ref="myFile" @change="uploadArquivo">
-      <button v-on:click='testInst()' style="background-color: #ffffff;color: rgb(0, 0, 0);cursor: pointer;padding: 5.1px 15px;border:none;margin-left:5px">Parse instruções p/ código</button>
       <p v-if="isTxt==false" style="color:red; font-size:20"><b>Erro:</b> Apenas permitidos arquivos com extensão .txt</p>
-      <p style="background-color:#1f1f1f">Digitar no layout: <br>
+      <p style="background-color:#1f1f1f"><b>Digitar no layout: </b><br>
         1: se zero_b então vá_para9 senão vá_para2 <br>
         2: faça ad_a vá_para3 <br>
         3: faça ad_a vá_para4 <br>
@@ -39,7 +51,7 @@
 
       </p>
     </div><br>
-    <button class="func1Btn" v-on:click='func1()'><i class="far fa-play-circle"></i> Começar</button>
+    <button class="func1Btn" v-on:click='testInst()'><i class="far fa-play-circle"></i> Começar</button>
     <div class="logResultado"><h1 style="font-size:20px">Histórico/Log:</h1>
       <textarea readonly placeholder="Log..."  v-model="logVal"></textarea>
     </div>
@@ -52,8 +64,11 @@ export default {
       data()
       {
       return{
-          A:null,B:null,C:null,D:null,E:null,F:null,G:null, //Registradores
-          isLtr:null, isTxt:null, //Validadores de entrada
+          A:0,B:0,C:0,D:0,E:0,F:0,G:0, //Registradores
+          Aalt:0, Balt:0, Calt:0, Dalt:0, Ealt:0, Falt:0, Galt:0,
+          showHelp:false,
+          handleReg:[],
+          isLtr:null, isTxt:null, isTxtReg:null, //Validadores de entrada
           valueInst:null,
           logVal:[],
           index:0,
@@ -62,7 +77,53 @@ export default {
       }
     },
   methods: {
-    uploadArquivo() {
+    uploadArquivoReg(){ //Macros de input
+      let file = this.$refs.myFileReg.files[0]; //Apenas 1 arquivo por vez
+      if(!file || file.type !== 'text/plain') this.isTxtReg=false; //Apenas texto/raw
+        else{
+        this.isTxtReg=true;  
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8"); //Encoder
+        reader.onload =  evt => {
+          this.handleReg=evt.target.result;
+          let arr=[]
+          arr = this.handleReg.split("\n")
+          console.log(arr)
+          for(let x=0; x<arr.length;x++){
+            if(arr[x].includes("reg=")){
+              this.CountReg=(arr[x].substring(arr[x].indexOf("reg=")+4));
+            }
+            if(arr[x].includes("A=")){
+              this.Aalt=(arr[x].substring(arr[x].indexOf("A=")+2))
+            }
+            if(arr[x].includes("B=")){
+              this.Balt=0
+              this.Balt=(arr[x].substring(arr[x].indexOf("B=")+2))
+            }
+            if(arr[x].includes("C=")){
+              this.Calt=(arr[x].substring(arr[x].indexOf("C=")+2))
+            }
+            if(arr[x].includes("D=")){
+              this.Dalt=(arr[x].substring(arr[x].indexOf("D=")+2))
+            }
+            if(arr[x].includes("E=")){
+              this.Ealt=(arr[x].substring(arr[x].indexOf("E=")+2))
+            }
+            if(arr[x].includes("F=")){
+              this.Falt=(arr[x].substring(arr[x].indexOf("F=")+2))
+            }
+            if(arr[x].includes("G=")){
+              this.Galt=(arr[x].substring(arr[x].indexOf("G=")+2))
+            }
+          }
+
+        }
+        reader.onerror = evt => {
+          console.error(evt); //Não apagar
+        }
+      }
+    },
+    uploadArquivo() { //Instruções
       let file = this.$refs.myFile.files[0]; //Apenas 1 arquivo por vez
       if(!file || file.type !== 'text/plain') this.isTxt=false; //Apenas texto/raw
         else{
@@ -73,14 +134,14 @@ export default {
           this.valueInst = evt.target.result; //Conteúdo do arquivo
         }
         reader.onerror = evt => {
-          console.error(evt);
+          console.error(evt); //Não apagar
         }
       }
     },
     isNumber: function(evt) {
       evt = (evt) ? evt : window.event;
       var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))==45) {
         this.isLtr=true;
         evt.preventDefault();
       } else {
@@ -88,7 +149,10 @@ export default {
       }
     },
     testInst(){
-      while ( this.logVal.length) {  this.logVal.pop(); }
+      //Handling de variáveis
+      this.A=this.Aalt; this.B=this.Balt;
+      this.logVal=[]
+      this.index=0
       let arr=[]
       arr = this.valueInst.split("\n")
       let x=0;
@@ -126,11 +190,9 @@ export default {
               if(eval(`this.${pivot}`) == 0){
                   if(arr[x].includes("vá_para")){
                   
-                  this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + pivot + eval(`this.${pivot}`)+ ")")
-                  break;
+                  this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
+
                   }
-                  this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + pivot+ eval(`this.${pivot}`) + ")")
-                  //se teste =0 
               }else{
                   if(arr[x].includes("vá_para")){
                     //console.log(arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) //Final
@@ -177,6 +239,12 @@ export default {
   margin: 0 auto;
   max-width: fit-content;
   text-align: center;
+}
+.tooltipReg{
+  position: absolute;
+  background-color:black;
+  width:30%;
+  margin-left: 25%
 }
 form>p>input, form>input{
   border:1px rgb(100, 59, 59) solid;
