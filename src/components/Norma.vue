@@ -150,7 +150,7 @@ export default {
     },
     testInst(){
       //Handling de variáveis
-      this.A=this.Aalt; this.B=this.Balt;
+      this.A=this.Aalt; this.B=this.Balt, this.C=this.Calt ,this.D=this.Dalt, this.E=this.Ealt, this.F=this.Falt, this.G=this.Galt
       this.logVal=[]
       this.index=0
       let arr=[]
@@ -162,7 +162,24 @@ export default {
             let pivot=(arr[x].substring(arr[x].indexOf("ad_")+3,arr[x].indexOf("v")-1).toUpperCase())
             console.log(eval(`this.${pivot}++`))
             console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
-            this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A: " + this.A + " B: " + this.B + ")")
+            if(this.CountReg==2){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")")
+            }
+            else if(this.CountReg==3){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+            }
+            else if(this.CountReg==4){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+            }
+            else if(this.CountReg==5){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+            }
+            else if(this.CountReg==6){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+            }
+            else if(this.CountReg==7){
+              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+            }
               if(arr[x].includes("vá_para")){
                 x=((arr[x].split(' ').pop().trim().substr(- 1))-1)
               }
@@ -172,9 +189,44 @@ export default {
               console.log(eval(`this.${pivot}--`))
               console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
               if(eval(`this.${pivot}`) == 0){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")")
+                  if(this.CountReg==2){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B +")")
+                  }
+                  else if(this.CountReg==3){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+                  }
+                  else if(this.CountReg==4){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+                  }
+                  else if(this.CountReg==5){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+                  }
+                  else if(this.CountReg==6){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final"+ " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+                  }
+                  else if(this.CountReg==7){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+                  }
+                //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")")
               } else{ //Handler se decrementar o pivot e ele ser 0 printa o último
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A: " + this.A + " B: " + this.B + ")")
+              if(this.CountReg==2){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")")
+              }
+              else if(this.CountReg==3){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+              }
+              else if(this.CountReg==4){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+              }
+              else if(this.CountReg==5){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+              }
+              else if(this.CountReg==6){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+              }
+              else if(this.CountReg==7){
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+              }
               }
               if(arr[x].includes("vá_para")){
                 x=((arr[x].split(' ').pop().trim().substr(- 1))-1)
@@ -189,8 +241,25 @@ export default {
             pivot=(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)).toUpperCase()
               if(eval(`this.${pivot}`) == 0){
                   if(arr[x].includes("vá_para")){
-                  
-                  this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
+                  if(this.CountReg==2){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B +")")
+                  }
+                  else if(this.CountReg==3){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+                  }
+                  else if(this.CountReg==4){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+                  }
+                  else if(this.CountReg==5){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+                  }
+                  else if(this.CountReg==6){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+                  }
+                  else if(this.CountReg==7){
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+                  }
+                  //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
 
                   }
               }else{
