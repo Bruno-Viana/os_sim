@@ -72,7 +72,7 @@ export default {
           valueInst:null,
           logVal:[],
           index:0,
-          CountReg:2,
+          CountReg:2,terminou:null,
           Resultado:null,
       }
     },
@@ -189,24 +189,7 @@ export default {
               console.log(eval(`this.${pivot}--`))
               console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
               if(eval(`this.${pivot}`) == 0){
-                  if(this.CountReg==2){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B +")")
-                  }
-                  else if(this.CountReg==3){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
-                  }
-                  else if(this.CountReg==4){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
-                  }
-                  else if(this.CountReg==5){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
-                  }
-                  else if(this.CountReg==6){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final"+ " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
-                  }
-                  else if(this.CountReg==7){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
-                  }
+                 
                 //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")")
               } else{ //Handler se decrementar o pivot e ele ser 0 printa o último
               if(this.CountReg==2){
@@ -239,6 +222,7 @@ export default {
           if(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)){
             let pivot;
             pivot=(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)).toUpperCase()
+            this.terminou=false
               if(eval(`this.${pivot}`) == 0){
                   if(arr[x].includes("vá_para")){
                   if(this.CountReg==2){
@@ -260,8 +244,8 @@ export default {
                     this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
                   }
                   //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
-
                   }
+                  this.terminou=true;
               }else{
                   if(arr[x].includes("vá_para")){
                     //console.log(arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) //Final
@@ -272,7 +256,8 @@ export default {
              
           }//extrai qual valor é testado
         } //fim if
-        }while(this.B!=0)
+        }while(this.terminou==false)
+        //(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)).toUpperCase()
     },
     func1(){ //Funções da demo
       do{
