@@ -50,15 +50,16 @@
         4: faça sub_b vá_para1
 
       </p>
-    </div><br>
-    <button class="func1Btn" v-on:click='testInst()'><i class="far fa-play-circle"></i> Começar</button>
-    <div class="logResultado"><h1 style="font-size:20px">Histórico/Log:</h1>
-      <textarea readonly placeholder="Log..."  v-model="logVal"></textarea>
-    </div>
+      </div><br>
+      <button class="func1Btn" v-on:click='testInst()' id='c'><i class="far fa-play-circle"></i> Começar</button>
+      <div class="logResultado"><h1 style="font-size:20px">Histórico/Log:</h1>
+      <textarea id="a" readonly placeholder="Log..."  v-model="logVal"></textarea>
+      </div>
   </div>
 </template>
 
 <script>
+import jQuery from "jquery";      
 export default {
   name: 'Norma',
       data()
@@ -88,7 +89,7 @@ export default {
           this.handleReg=evt.target.result;
           let arr=[]
           arr = this.handleReg.split("\n")
-          console.log(arr)
+          //console.log(arr)
           for(let x=0; x<arr.length;x++){
             if(arr[x].includes("reg=")){
               this.CountReg=(arr[x].substring(arr[x].indexOf("reg=")+4));
@@ -160,8 +161,8 @@ export default {
         if(arr[x].includes("faça")){
           if(arr[x].includes("ad_")){
             let pivot=(arr[x].substring(arr[x].indexOf("ad_")+3,arr[x].indexOf("v")-1).toUpperCase())
-            console.log(eval(`this.${pivot}++`))
-            console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
+            eval(`this.${pivot}++`)
+            //console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
             if(this.CountReg==2){
               this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")")
             }
@@ -186,8 +187,8 @@ export default {
           }
           else if(arr[x].includes("sub_")){
               let pivot=(arr[x].substring(arr[x].indexOf("sub_")+4,arr[x].indexOf("v")-1).toUpperCase())
-              console.log(eval(`this.${pivot}--`))
-              console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
+              eval(`this.${pivot}--`)
+              //console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
               if(eval(`this.${pivot}`) == 0){
                  
                 //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")")
@@ -222,9 +223,11 @@ export default {
           if(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)){
             let pivot;
             pivot=(arr[x].substring(arr[x].indexOf("zero_")+5,arr[x].indexOf("então")-1)).toUpperCase()
-            this.terminou=false
+            this.terminou=false 
               if(eval(`this.${pivot}`) == 0){
                   if(arr[x].includes("vá_para")){
+                    //console.log(xd)
+                    //x=arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)
                   if(this.CountReg==2){
                     this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B +")")
                   }
@@ -244,6 +247,7 @@ export default {
                     this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
                   }
                   //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
+                  
                   }
                   this.terminou=true;
               }else{
@@ -282,6 +286,14 @@ export default {
   },
 }
 
+jQuery(function ($) {
+  $("#c").on("click", function () {
+      var avalue = $('#a').val();
+      var newVal = avalue.replace(/^\s*[\r\n]/gm, '');
+      //var finalResults = newVal.replace("\n", "");
+      $('#a').val(newVal);
+  });
+})
 
 </script>
 

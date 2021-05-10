@@ -8,6 +8,7 @@
 <script>
 import Norma from './components/Norma.vue'
 
+
 export default {
   name: 'App',
   components: {
