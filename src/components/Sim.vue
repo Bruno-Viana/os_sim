@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapperNorma">
+  <div class="wrapperSim">
     <div style="width:80vw;min-width:50vw">
       <h1>Simulador de Processos com paginação</h1>
       <form style="width:fit-content; margin: 0 auto;text-align:right;">
@@ -37,7 +37,7 @@ s 1, 15; armazena valor 1 no endereço 15"></textarea><br>
 <script>
 import jQuery from "jquery";      
 export default {
-  name: 'Norma',
+  name: 'Sim',
       data()
       {
       return{
@@ -101,12 +101,24 @@ export default {
       }
     },
     startProc(){
-      console.log(this.proc1Data,this.proc2Data)
       for(let x=0;x<this.proc1Data.length;x++){
           if(x==0){
-            console.log()
+            console.log('PID:' + this.proc1Data[x]);
+          }else if(x==1){
+            console.log('End de Mem:' + this.proc1Data[x]);
+          }else{
+            if(this.proc1Data[x].includes("L")){
+              console.log('Carrega o endereço' + this.proc1Data[x].split("L")[1].replace(/\s/g, ''));
+            }else if(this.proc1Data[x].includes("S")){
+              if(this.proc1Data[x].includes(",")){
+                let test = this.proc1Data[x].split("S")
+                let parsedString = test[1].split(",");
+                console.log('Armazena o valor:' + parsedString[0].replace(/\s/g, ''))
+                console.log('No endereço:' + parsedString[1].replace(/\s/g, ''))
+              }
+            }
           }
-      }
+        }
     },
     testInst(){
       //Handling de variáveis
@@ -249,7 +261,7 @@ jQuery(function ($) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.wrapperNorma{
+.wrapperSim{
   color:white;
   background-color: rgba(0, 0, 0, 0.164);
   margin: 0 auto;

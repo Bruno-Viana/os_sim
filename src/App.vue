@@ -1,18 +1,18 @@
 <template>
   <div id="app">
           <div style="display:none" class="header"><img src="./assets/LOGO-UNISC.png" alt="Logo Unisc" width="200px"></div>
-    <Norma/>
+    <Sim/>
   </div>
 </template>
 
 <script>
-import Norma from './components/Norma.vue'
+import Sim from './components/Sim.vue'
 
 
 export default {
   name: 'App',
   components: {
-    Norma
+    Sim
   }
 }
 </script>
