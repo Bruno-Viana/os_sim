@@ -1,59 +1,35 @@
 <template>
   <div class="wrapperNorma">
     <div style="width:80vw;min-width:50vw">
-      <h1>Máquina Norma</h1>
-      <form v-on:keypress="isNumber($event)">
-        Quantidade de registradores: <input type="number" name="CountReg" v-model="CountReg" min="2" max="7"> <br>
-        <br><label for='uploadBtnReg'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
-        <input id="uploadBtnReg" type="file" ref="myFileReg" @change="uploadArquivoReg"> <i style="font-size:20px;cursor:help" @mouseover="showHelp=true" @mouseleave="showHelp=false" class="far fa-question-circle"></i>
-        <div class="tooltipReg" v-if="showHelp==true">
-          <h1 style="font-size:20px;">Exemplos de arquivos txt válidos:</h1>
-          reg=7 //Numero de reg<br>
-          A=2 //Atribuição ao registrador A<br>
-          B=3<br>
-          C=3<br>
-          D=1<br>
-          G=4<br>
-          Se nenhum valor foi setado e o número de registradores cobre o registrador ele iniciará como 0, como é o caso do E e do F neste exemplo.
-        </div>
-        <p v-if="isTxtReg==false" style="color:red; font-size:20"><b>Erro:</b> Apenas permitidos arquivos com extensão .txt</p>
-        <p>Valor de entrada para A:<input type="text" name="A" v-model="Aalt"></p>
-        <p>Valor de entrada para B:<input type="text" name="B" v-model="Balt"></p>
-        <p v-if="CountReg>=3">Valor de entrada para C:<input type="text" name="C" v-model="Calt"></p>
-        <p v-if="CountReg>=4">Valor de entrada para D:<input type="text" name="D" v-model="Dalt"></p>
-        <p v-if="CountReg>=5">Valor de entrada para E:<input type="text" name="E" v-model="Ealt"></p>
-        <p v-if="CountReg>=6">Valor de entrada para F:<input type="text" name="F" v-model="Falt"></p>
-        <p v-if="CountReg>=7">Valor de entrada para G:<input type="text" name="G" v-model="Galt"></p>
-      
-      <p v-if="isLtr" style="color:red; font-size:20"><b>Erro:</b> Apenas números não decimais serão aceitos.</p>
+      <h1>Simulador de Processos com paginação</h1>
+      <form style="width:fit-content; margin: 0 auto;text-align:right;">
+        Quantidade de Memória RAM:<input style="width:80px" type="number" v-model="MemPrincipal" min="3" max="50"><br>
+        Número de páginas:<input style="width:80px" type="number" v-model="nPaginas" min="1" max="50"> <br>
       </form>
       <hr>
-      <p><b>Registros inseridos:</b></p>
-      <p>A: {{Aalt}}</p>
-      <p>B: {{Balt}}</p>
-      <p v-if="CountReg>=3">C: {{Calt}}</p>
-      <p v-if="CountReg>=4">D: {{Dalt}}</p>
-      <p v-if="CountReg>=5">E: {{Ealt}}</p>
-      <p v-if="CountReg>=6">F: {{Falt}}</p>
-      <p v-if="CountReg>=7">G: {{Galt}}</p>
     </div>
     <div class="descBlock">
-      <p style="margin-left: 8px">INSTRUÇÕES</p><hr>
-      <textarea style="text-align:left" v-model="valueInst" placeholder="id: condição/operação variável ex:           1: se zero_b então vá_para9 senão vá_para2"></textarea><br>
-      <label for='uploadBtn'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
-      <input id="uploadBtn" type="file" ref="myFile" @change="uploadArquivo">
+        <p style="margin-left: 8px">PROCESSOS</p><hr>
+        <textarea style="text-align:left;	-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 50%;" v-model="processo1" placeholder="1; Pid do processo
+20;  endereços de memória necessários (tamanho do processo)
+l 5; carrega o endereço 5
+s 2, 15; armazena o valor 2 no endereço 5"></textarea>
+        <textarea style="text-align:left;	-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 50%;" v-model="processo2" placeholder="2; Identificador do processo
+30; endereços de memória necessários (tamanho do processo)
+l 6; carrega o endereço 6
+s 0, 25; armazena valor 0 no endereço 25
+s 1, 15; armazena valor 1 no endereço 15"></textarea><br>
+        <label for='uploadBtn'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
+        <input id="uploadBtn" type="file" ref="myFile" @change="uploadArquivo1">
+        <div style="float:right">
+        <label for='uploadBtn2'><i class="fas fa-upload"></i>Selecionar um arquivo</label>
+        <input id="uploadBtn2" type="file" ref="myFile2" @change="uploadArquivo2">
+      </div>
       <p v-if="isTxt==false" style="color:red; font-size:20"><b>Erro:</b> Apenas permitidos arquivos com extensão .txt</p>
-      <p style="background-color:#1f1f1f"><b>Digitar no layout: </b><br>
-        1: se zero_b então vá_para9 senão vá_para2 <br>
-        2: faça ad_a vá_para3 <br>
-        3: faça ad_a vá_para4 <br>
-        4: faça sub_b vá_para1
-
-      </p>
       </div><br>
-      <button class="func1Btn" v-on:click='testInst()' id='c'><i class="far fa-play-circle"></i> Começar</button>
+      <button class="func1Btn" v-on:click='startProc()' id='c'><i class="far fa-play-circle"></i> Começar</button>
       <div class="logResultado"><h1 style="font-size:20px">Histórico/Log:</h1>
-      <textarea id="a" readonly placeholder="Log..."  v-model="logVal"></textarea>
+      <textarea id="a" readonly placeholder="Log..."  v-model="proc1Data"></textarea>
       </div>
   </div>
 </template>
@@ -65,10 +41,9 @@ export default {
       data()
       {
       return{
-          A:0,B:0,C:0,D:0,E:0,F:0,G:0, //Registradores
-          Aalt:0, Balt:0, Calt:0, Dalt:0, Ealt:0, Falt:0, Galt:0,
-          showHelp:false,
-          handleReg:[],
+          MemPrincipal:null, nPaginas:null,
+          processo1:null,processo2:null,
+          proc1Data:[], proc2Data:[],
           isLtr:null, isTxt:null, isTxtReg:null, //Validadores de entrada
           valueInst:null,
           logVal:[],
@@ -78,53 +53,7 @@ export default {
       }
     },
   methods: {
-    uploadArquivoReg(){ //Macros de input
-      let file = this.$refs.myFileReg.files[0]; //Apenas 1 arquivo por vez
-      if(!file || file.type !== 'text/plain') this.isTxtReg=false; //Apenas texto/raw
-        else{
-        this.isTxtReg=true;  
-        let reader = new FileReader();
-        reader.readAsText(file, "UTF-8"); //Encoder
-        reader.onload =  evt => {
-          this.handleReg=evt.target.result;
-          let arr=[]
-          arr = this.handleReg.split("\n")
-          //console.log(arr)
-          for(let x=0; x<arr.length;x++){
-            if(arr[x].includes("reg=")){
-              this.CountReg=(arr[x].substring(arr[x].indexOf("reg=")+4));
-            }
-            if(arr[x].includes("A=")){
-              this.Aalt=(arr[x].substring(arr[x].indexOf("A=")+2))
-            }
-            if(arr[x].includes("B=")){
-              this.Balt=0
-              this.Balt=(arr[x].substring(arr[x].indexOf("B=")+2))
-            }
-            if(arr[x].includes("C=")){
-              this.Calt=(arr[x].substring(arr[x].indexOf("C=")+2))
-            }
-            if(arr[x].includes("D=")){
-              this.Dalt=(arr[x].substring(arr[x].indexOf("D=")+2))
-            }
-            if(arr[x].includes("E=")){
-              this.Ealt=(arr[x].substring(arr[x].indexOf("E=")+2))
-            }
-            if(arr[x].includes("F=")){
-              this.Falt=(arr[x].substring(arr[x].indexOf("F=")+2))
-            }
-            if(arr[x].includes("G=")){
-              this.Galt=(arr[x].substring(arr[x].indexOf("G=")+2))
-            }
-          }
-
-        }
-        reader.onerror = evt => {
-          console.error(evt); //Não apagar
-        }
-      }
-    },
-    uploadArquivo() { //Instruções
+    uploadArquivo1() { //Processo1
       let file = this.$refs.myFile.files[0]; //Apenas 1 arquivo por vez
       if(!file || file.type !== 'text/plain') this.isTxt=false; //Apenas texto/raw
         else{
@@ -132,58 +61,79 @@ export default {
         let reader = new FileReader();
         reader.readAsText(file, "UTF-8"); //Encoder
         reader.onload =  evt => {
-          this.valueInst = evt.target.result; //Conteúdo do arquivo
-        }
+          this.processo1 = evt.target.result; //Conteúdo do arquivo
+          let arr=[]
+          arr = this.processo1.split("\n")
+          let x=0;
+            if(arr[x].includes(";")){
+              if(arr[x].includes(";")){
+              for(let y = 0 ; y<arr.length; y++){
+              this.proc1Data.push((arr[x+y].substring(arr[x+y].indexOf(";"),arr[x+y].indexOf("")-1).toUpperCase()))
+              }
+            }}
+        }   
         reader.onerror = evt => {
           console.error(evt); //Não apagar
         }
       }
     },
-    isNumber: function(evt) {
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57))==45) {
-        this.isLtr=true;
-        evt.preventDefault();
-      } else {
-        this.isLtr=false;
+    uploadArquivo2() { //Processo2
+      let file = this.$refs.myFile2.files[0]; //Apenas 1 arquivo por vez
+      if(!file || file.type !== 'text/plain') this.isTxt=false; //Apenas texto/raw
+        else{
+        this.isTxt=true;  
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8"); //Encoder
+        reader.onload =  evt => {
+          this.processo2 = evt.target.result; //Conteúdo do arquivo
+          let arr=[]
+          arr = this.processo2.split("\n")
+          let x=0;
+            if(arr[x].includes(";")){
+              for(let y = 0 ; y<arr.length; y++){
+              this.proc2Data.push((arr[x+y].substring(arr[x+y].indexOf(";"),arr[x+y].indexOf("")-1).toUpperCase()))
+              }
+            }
+        }   
+        reader.onerror = evt => {
+          console.error(evt); //Não apagar
+        }
+      }
+    },
+    startProc(){
+      console.log(this.proc1Data,this.proc2Data)
+      for(let x=0;x<this.proc1Data.length;x++){
+          if(x==0){
+            console.log()
+          }
       }
     },
     testInst(){
       //Handling de variáveis
-      this.A=this.Aalt; this.B=this.Balt, this.C=this.Calt ,this.D=this.Dalt, this.E=this.Ealt, this.F=this.Falt, this.G=this.Galt
       this.logVal=[]
       this.index=0
       let arr=[]
-      arr = this.valueInst.split("\n")
+      //let arraux=[]
+      arr = this.processo1.split("\n")
+      let tamanho=arr.length;
+      console.log(tamanho)
+      console.log(arr)
       let x=0;
       do{
-        if(arr[x].includes("faça")){
-          if(arr[x].includes("ad_")){
-            let pivot=(arr[x].substring(arr[x].indexOf("ad_")+3,arr[x].indexOf("v")-1).toUpperCase())
-            eval(`this.${pivot}++`)
-            //console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
-            if(this.CountReg==2){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")")
+        if(arr[x].includes(";")){
+          if(arr[x].includes(";")){
+            for(let y = 0 ; y<arr.length; y++){
+             console.log((arr[x+y].substring(arr[x+y].indexOf(";"),arr[x+y].indexOf("")-1).toUpperCase()))
             }
-            else if(this.CountReg==3){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
-            }
-            else if(this.CountReg==4){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
-            }
-            else if(this.CountReg==5){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
-            }
-            else if(this.CountReg==6){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
-            }
-            else if(this.CountReg==7){
-              this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
-            }
-              if(arr[x].includes("vá_para")){
-                x=((arr[x].split(' ').pop().trim().substr(- 1))-1)
-              }
+            
+            /*
+            let pivot=(arr[x].substring(arr[x].indexOf(";"),arr[x].indexOf("v")-1).toUpperCase())
+            console.log(pivot)
+            console.log((arr[x+1].substring(arr[x+1].indexOf(";"),arr[x+1].indexOf("v")-1).toUpperCase()))
+            console.log((arr[x+2].substring(arr[x+2].indexOf(";"),arr[x+1].indexOf("v")-1).toUpperCase()))
+            console.log((arr[x+3].substring(arr[x+3].indexOf(";"),arr[x+1].indexOf("v")-1).toUpperCase()))
+            */
+            
           }
           else if(arr[x].includes("sub_")){
               let pivot=(arr[x].substring(arr[x].indexOf("sub_")+4,arr[x].indexOf("v")-1).toUpperCase())
@@ -191,25 +141,25 @@ export default {
               //console.log("Letra:" + pivot + " Val:" + eval(`this.${pivot}`))
               if(eval(`this.${pivot}`) == 0){
                  
-                //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")")
+                //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + "Final" + " A: " + this.A + " B: " + this.B + ")" + '\xa0' +  new Date().toLocaleString())
               } else{ //Handler se decrementar o pivot e ele ser 0 printa o último
               if(this.CountReg==2){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B +")" + '\xa0' +  new Date().toLocaleString())
               }
               else if(this.CountReg==3){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")" + '\xa0' +  new Date().toLocaleString())
               }
               else if(this.CountReg==4){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")" + '\xa0' +  new Date().toLocaleString())
               }
               else if(this.CountReg==5){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")" + '\xa0' +  new Date().toLocaleString())
               }
               else if(this.CountReg==6){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")" + '\xa0' +  new Date().toLocaleString())
               }
               else if(this.CountReg==7){
-                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+                this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (x+1) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")" + '\xa0' +  new Date().toLocaleString())
               }
               }
               if(arr[x].includes("vá_para")){
@@ -229,24 +179,24 @@ export default {
                     //console.log(xd)
                     //x=arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)
                   if(this.CountReg==2){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B +")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B +")" + '\xa0' +  new Date().toLocaleString())
                   }
                   else if(this.CountReg==3){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C + ")" + '\xa0' +  new Date().toLocaleString())
                   }
                   else if(this.CountReg==4){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D +")" + '\xa0' +  new Date().toLocaleString())
                   }
                   else if(this.CountReg==5){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E +")" + '\xa0' +  new Date().toLocaleString())
                   }
                   else if(this.CountReg==6){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F +")" + '\xa0' +  new Date().toLocaleString())
                   }
                   else if(this.CountReg==7){
-                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")")
+                    this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A:" + this.A + " B:" + this.B + " C:" + this.C +  " D:" + this.D + " E:" + this.E + " F:" + this.F + " G:" + this.G +")" + '\xa0' +  new Date().toLocaleString())
                   }
-                  //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")")
+                  //this.logVal[this.index++] = ("\n" + "(" +this.index + ", ID:" + (arr[x].substring(arr[x].indexOf("vá_para")+7,arr[x].indexOf("senão")-1)) + " A: " + eval(`this.${pivot}`) + " " + pivot + " " + eval(`this.${pivot}`)+ ")" + '\xa0' +  new Date().toLocaleString())
                   
                   }
                   this.terminou=true;
@@ -267,20 +217,20 @@ export default {
       do{
         this.func2();
       }while(this.B>0);
-      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "9," + " " + "A:" + this.A + " " + "B:" + this.B + ")");
+      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "9," + " " + "A:" + this.A + " " + "B:" + this.B + ")" + '\xa0' +  new Date().toLocaleString());
     },
     func4(){
       this.B--;
-      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "4," + " " + "A:" + this.A + " " + "B:" + this.B + ")")
+      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "4," + " " + "A:" + this.A + " " + "B:" + this.B + ")" + '\xa0' +  new Date().toLocaleString())
     },
     func3(){
       this.A++;
-      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "3," + " " + "A:" + this.A + " " + "B:" + this.B + ")")
+      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "3," + " " + "A:" + this.A + " " + "B:" + this.B + ")" + '\xa0' +  new Date().toLocaleString())
       this.func4();
     },
     func2(){
       this.A++;
-      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "2," + " " + "A:" + this.A + " " + "B:" + this.B + ")")
+      this.logVal[this.index++] = ("\n" +this.index + ": " + "(" + "2," + " " + "A:" + this.A + " " + "B:" + this.B + ")" + '\xa0' +  new Date().toLocaleString())
       this.func3();
     },
   },

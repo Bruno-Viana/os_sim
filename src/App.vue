@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-          <div class="header"><img src="./assets/LOGO-UNISC.png" alt="Logo Unisc" width="200px"></div>
+          <div style="display:none" class="header"><img src="./assets/LOGO-UNISC.png" alt="Logo Unisc" width="200px"></div>
     <Norma/>
   </div>
 </template>
